@@ -65,7 +65,7 @@ export default function App(props) {
       setCounterPokemon(getRandomInt(0, 150));
     }, 1000);
 
-    pokemonActions.addPokemon(pokemon[counterPokemon]);
+    dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
   };
 
   return (
@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
 
   background: {
     flex: 1,
+    position:'relative',
+    zIndex:-2
   },
 
   containerPokemon: {
@@ -122,5 +124,7 @@ const styles = StyleSheet.create({
   pokeball: {
     width: Dimensions.get('window').width * 0.2,
     height: Dimensions.get('window').width * 0.2,
+    position:'relative',
+    zIndex:9
   },
 });

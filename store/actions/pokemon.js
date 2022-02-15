@@ -17,6 +17,7 @@ export const getPokemon = () => {
         pokemon.id = index;
         pokemon.level = getRandomInt(40, 80);
         pokemon.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index}.png`;
+        pokemon.sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`;
         pokemon.sexe = sexeRandom === 0 ? 'male' : 'femelle';
 
         return pokemon;

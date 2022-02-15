@@ -19,7 +19,6 @@ export default function Pokemon(props) {
   const randomAnimation = () => {
     let animation;
     const random = getRandomInt(1, 3);
-console.log(random)
     switch (random) {
       case 1:
         animation = 'slideOutLeft';
@@ -37,7 +36,7 @@ console.log(random)
 
     return animation;
   };
-console.log(randomAnimation())
+
   return (
     <SafeAreaView>
       <View style={styles.container}>

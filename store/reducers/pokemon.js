@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
     case ADD_POKEMON:
       return {
         ...state,
-        pokemonTeam: [...action.pokemon],
+        pokemonTeam: [...state.pokemonTeam, action.pokemon],
       };
 
     default:
