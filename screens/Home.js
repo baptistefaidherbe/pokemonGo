@@ -25,7 +25,6 @@ import * as pokemonActions from '../store/actions/pokemon';
 
 export default function App(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
-  const [pokemonIsCaptured, setPokemonIsCaptured] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
   const dispatch = useDispatch();
@@ -60,11 +59,13 @@ export default function App(props) {
       duration: 200,
       useNativeDriver: true,
     }).start();
-    setPokemonIsCaptured(true);
+
     setTimeout(() => {
       fadeIn();
       setCounterPokemon(getRandomInt(0, 150));
     }, 1000);
+
+    pokemonActions.addPokemon(pokemon[counterPokemon]);
   };
 
   return (
@@ -112,10 +113,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  containerPokemon:{
-      flex:1,
-      justifyContent:'space-around',
-      alignItems:'center',
+  containerPokemon: {
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 
   pokeball: {

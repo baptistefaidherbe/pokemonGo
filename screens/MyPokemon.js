@@ -11,6 +11,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+//Redux
+import { useSelector, useDispatch } from 'react-redux';
+import * as pokemonActions from '../store/actions/pokemon';
+
 export default function MyPokemon() {
   return (
     <View style={styles.container}>
