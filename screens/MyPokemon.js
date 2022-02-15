@@ -9,12 +9,45 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
-export default function MyPokemon() {
+import { LinearGradient } from 'expo-linear-gradient';
+
+//Redux
+import { useSelector, useDispatch } from 'react-redux';
+import * as pokemonActions from '../store/actions/pokemon';
+
+//Components
+import PokemonTeam from '../components/PokemonTeam';
+
+export default function MyPokemon(props) {
+  const pokemon = useSelector((state) => state.pokemon.pokemonTeam);
+  const dispatch = useDispatch();
+
+  const pokemonDetails = (id, name, level, sexe, src) => {
+    props.navigation.navigate('DetailPokemon', {
+      id,
+      name,
+      level,
+      sexe,
+      src,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Ma liste Pokemon</Text>
+      <SafeAreaView style={{ flex: 1 }}>
+        <LinearGradient style={{ flex: 1 }} colors={['#22c1c3', '#fdbb2d']}>
+          <FlatList
+            data={pokemon}
+            renderItem={({ item }) => (
+              <PokemonTeam pokemon={item} onClickPokemon={pokemonDetails} />
+            )}
+            keyExtractor={(item, index) => index}
+          />
+        </LinearGradient>
+      </SafeAreaView>
     </View>
   );
 }
@@ -22,7 +55,12 @@ export default function MyPokemon() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'blue',
-    paddingHorizontal: 25,
+    backgroundColor: 'white',
+    marginBottom: 80,
+  },
+
+  imagePokemon: {
+    width: Dimensions.get('window').width * 0.7,
+    height: Dimensions.get('window').width * 0.7,
   },
 });

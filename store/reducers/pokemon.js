@@ -1,8 +1,9 @@
-import { GET_POKEMON, GET_POKEMON_TYPE } from '../actions/pokemon';
+import { GET_POKEMON, GET_POKEMON_TYPE, ADD_POKEMON } from '../actions/pokemon';
 
 const initialState = {
   pokemons: [],
-  pokemonType : []
+  pokemonType: [],
+  pokemonTeam: [],
 };
 
 export default (state = initialState, action) => {
@@ -16,6 +17,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pokemonType: [...action.pokemonType],
+      };
+    case ADD_POKEMON:
+      return {
+        ...state,
+        pokemonTeam: [...state.pokemonTeam, action.pokemon],
       };
 
     default:

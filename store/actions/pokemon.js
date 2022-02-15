@@ -3,6 +3,7 @@ import { getRandomInt } from '../../utils/utils';
 
 export const GET_POKEMON = 'GET_POKEMON';
 export const GET_POKEMON_TYPE = 'GET_POKEMON_TYPE';
+export const ADD_POKEMON = 'ADD_POKEMON';
 
 export const getPokemon = () => {
   return async (dispatch) => {
@@ -16,6 +17,7 @@ export const getPokemon = () => {
         pokemon.id = index;
         pokemon.level = getRandomInt(40, 80);
         pokemon.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index}.png`;
+        pokemon.sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`;
         pokemon.sexe = sexeRandom === 0 ? 'male' : 'femelle';
 
         return pokemon;
@@ -40,3 +42,8 @@ export const getPokemonType = (id) => {
     }
   };
 };
+
+export const addPokemon = (pokemon) => ({
+  type: ADD_POKEMON,
+  pokemon,
+});
