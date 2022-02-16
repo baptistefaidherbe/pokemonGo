@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   SafeAreaView,
   Platform,
@@ -13,6 +12,7 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
+import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 
 //constants
 import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
@@ -28,6 +28,7 @@ import Pokemon from '../components/Pokemon';
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
 import * as pokemonActions from '../store/actions/pokemon';
+import * as dresseurActions from '../store/actions/dresseur';
 
 export default function App(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
@@ -37,7 +38,10 @@ export default function App(props) {
   const [fadeIsOut, setFadeIsOut] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
+  const stockPokeball = useSelector((state) => state.dresseur.stockPokeball);
+
   const dispatch = useDispatch();
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -109,6 +113,8 @@ export default function App(props) {
     playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
     dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
 
+    dispatch(dresseurActions.supprStockPokeball());
+
     fadeOut();
   };
 
@@ -144,6 +150,16 @@ export default function App(props) {
                   source={require('../assets/img/pokeball.png')}
                   style={styles.pokeball}
                 />
+                <Badge
+                  status='primary'
+                  value={stockPokeball}
+                  containerStyle={{
+                    position: 'absolute',
+                    top: 5,
+                    left: 60,
+                    zIndex: 2,
+                  }}
+                />
               </TouchableOpacity>
             </>
           )}
@@ -174,6 +190,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.2,
     height: Dimensions.get('window').width * 0.2,
     position: 'relative',
-    zIndex: 9,
+    zIndex: 1,
   },
 });
