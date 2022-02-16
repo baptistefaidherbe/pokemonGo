@@ -13,7 +13,13 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
+
+//constants
+import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
+
+//utils
 import { getRandomInt, playSound } from '../utils/utils';
+import criesPokemon from '../utils/criesPokemon';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -26,7 +32,7 @@ export default function App(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
   const [pokemonNoVisible, setPokemonNoVisible] = useState(false);
   const [pokeballNoActif, setPokeballNoActif] = useState(false);
-  const [fadeIsIn, setFadeIsIn] = useState(false);
+  const [fadeIsIn, setFadeIsIn] = useState(true);
   const [fadeIsOut, setFadeIsOut] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
@@ -35,20 +41,40 @@ export default function App(props) {
 
   useEffect(() => {
     dispatch(pokemonActions.getPokemon());
-    playSound({
-      file: require('../assets/mp3/music1.mp3'),
-    });
+
+    const randomMusic = getRandomInt(1, 3);
+    switch (randomMusic) {
+      case 1:
+        playSound({
+          file: require('../assets/mp3/music1.mp3'),
+        });
+        break;
+      case 2:
+        playSound({
+          file: require('../assets/mp3/music2.mp3'),
+        });
+        break;
+      case 3:
+        playSound({
+          file: require('../assets/mp3/music3.mp3'),
+        });
+        break;
+
+      default:
+        break;
+    }
+
     fadeIn();
   }, []);
 
   useEffect(() => {
     let timeOut;
     if (fadeIsIn) {
-      playSound({ file: require('../assets/mp3/4.mp3') });
+      criesPokemon(counterPokemon);
       setPokemonNoVisible(false);
       setPokeballNoActif(false);
 
-      const delayPop = getRandomInt(15000, 20000);
+      const delayPop = getRandomInt(DELAY_RANDOM_MIN, DELAY_RANDOM_MAX);
       timeOut = setTimeout(() => {
         fadeOut();
       }, delayPop);
@@ -56,10 +82,10 @@ export default function App(props) {
       setPokemonNoVisible(true);
       setPokeballNoActif(true);
 
-      const delayPop = getRandomInt(15000, 20000);
+      const delayPop = getRandomInt(DELAY_RANDOM_MIN, DELAY_RANDOM_MAX);
       timeOut = setTimeout(() => {
-        fadeIn();
         setCounterPokemon(getRandomInt(0, 150));
+        fadeIn();
       }, delayPop);
     }
 
