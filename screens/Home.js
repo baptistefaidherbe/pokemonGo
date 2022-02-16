@@ -13,8 +13,8 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getRandomInt } from '../utils/utils';
+import { Audio } from 'expo-av';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -25,6 +25,14 @@ import * as pokemonActions from '../store/actions/pokemon';
 
 export default function App(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
+  const [pokemonVisible, setPokemonVisible] = useState(false);
+  const [pokeballNoActif, setPokeballNoActif] = useState(false);
+
+  async function playSound(source) {
+    const { sound } = await Audio.Sound.createAsync(source.file);
+
+    await sound.playAsync();
+  }
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
   const dispatch = useDispatch();
@@ -51,6 +59,10 @@ export default function App(props) {
       duration: 1000,
       useNativeDriver: true,
     }).start();
+
+    playSound({ file: require('../assets/mp3/4.mp3') });
+    setPokemonVisible(false);
+    setPokeballNoActif(false);
   };
 
   const fadeOut = () => {
@@ -60,12 +72,16 @@ export default function App(props) {
       useNativeDriver: true,
     }).start();
 
+    const delayPop = getRandomInt(1000, 20000);
     setTimeout(() => {
       fadeIn();
       setCounterPokemon(getRandomInt(0, 150));
-    }, 1000);
+    }, delayPop);
 
+    playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
     dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
+    setPokemonVisible(true);
+    setPokeballNoActif(true);
   };
 
   return (
@@ -88,9 +104,14 @@ export default function App(props) {
                 <Pokemon
                   pokemon={pokemon[counterPokemon]}
                   onClickPokemon={pokemonDetails}
+                  pokemonVisible={pokemonVisible}
                 />
               </Animated.View>
-              <TouchableOpacity activeOpacity={0.1} onPress={fadeOut}>
+              <TouchableOpacity
+                disabled={pokeballNoActif}
+                activeOpacity={0.1}
+                onPress={fadeOut}
+              >
                 <Image
                   source={require('../assets/img/pokeball.png')}
                   style={styles.pokeball}
@@ -111,8 +132,8 @@ const styles = StyleSheet.create({
 
   background: {
     flex: 1,
-    position:'relative',
-    zIndex:-2
+    position: 'relative',
+    zIndex: -2,
   },
 
   containerPokemon: {
@@ -124,7 +145,7 @@ const styles = StyleSheet.create({
   pokeball: {
     width: Dimensions.get('window').width * 0.2,
     height: Dimensions.get('window').width * 0.2,
-    position:'relative',
-    zIndex:9
+    position: 'relative',
+    zIndex: 9,
   },
 });

@@ -36,7 +36,7 @@ export default function Pokemon(props) {
 
     return animation;
   };
-
+console.log(props.pokemonVisible)
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -47,6 +47,7 @@ export default function Pokemon(props) {
             d'apparaitre !
           </Text>
           <TouchableOpacity
+          disabled={props.pokemonVisible}
             activeOpacity={0.5}
             onPress={() =>
               props.onClickPokemon(
