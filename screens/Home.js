@@ -20,6 +20,7 @@ import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
 //utils
 import { getRandomInt, playSound } from '../utils/utils';
 import criesPokemon from '../utils/criesPokemon';
+import playMusic from '../utils/music';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -42,27 +43,7 @@ export default function App(props) {
   useEffect(() => {
     dispatch(pokemonActions.getPokemon());
 
-    const randomMusic = getRandomInt(1, 3);
-    switch (randomMusic) {
-      case 1:
-        playSound({
-          file: require('../assets/mp3/music1.mp3'),
-        });
-        break;
-      case 2:
-        playSound({
-          file: require('../assets/mp3/music2.mp3'),
-        });
-        break;
-      case 3:
-        playSound({
-          file: require('../assets/mp3/music3.mp3'),
-        });
-        break;
-
-      default:
-        break;
-    }
+    playMusic();
 
     fadeIn();
   }, []);
