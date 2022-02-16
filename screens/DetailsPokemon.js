@@ -13,6 +13,9 @@ import {
   ImageBackground,
 } from 'react-native';
 
+//utils
+import criesPokemon from '../utils/criesPokemon';
+
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
 import * as pokemonActions from '../store/actions/pokemon';
@@ -24,6 +27,11 @@ export default function DetailsPokemon(props) {
   useEffect(() => {
     dispatch(pokemonActions.getPokemonType(props.route.params.id));
   }, []);
+
+  const pokemonSound = () => {
+    const id = props.route.params.id - 1;
+    criesPokemon(id);
+  };
 
   return (
     <View style={styles.container}>
@@ -49,12 +57,14 @@ export default function DetailsPokemon(props) {
               ))}
             </Text>
           </View>
-          <Image
-            source={{
-              uri: props.route.params.src,
-            }}
-            style={styles.image}
-          />
+          <TouchableOpacity onPress={pokemonSound}>
+            <Image
+              source={{
+                uri: props.route.params.src,
+              }}
+              style={styles.image}
+            />
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>

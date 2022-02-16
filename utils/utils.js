@@ -7,9 +7,10 @@ export function getRandomInt(min, max) {
 }
 
 export async function playSound(source) {
-    console.log(source)
+  const audio = source.file;
+  // console.log(audio);
   const { sound } = await Audio.Sound.createAsync(source.file);
-  if (source === '11') {
+  if (audio === 11) {
     sound.setIsLoopingAsync(true);
   }
   await sound.replayAsync();
