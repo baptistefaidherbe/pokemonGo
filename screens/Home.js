@@ -13,8 +13,7 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
-import { getRandomInt } from '../utils/utils';
-import { Audio } from 'expo-av';
+import { getRandomInt, playSound } from '../utils/utils';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -25,14 +24,10 @@ import * as pokemonActions from '../store/actions/pokemon';
 
 export default function App(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
-  const [pokemonVisible, setPokemonVisible] = useState(false);
+  const [pokemonNoVisible, setPokemonNoVisible] = useState(false);
   const [pokeballNoActif, setPokeballNoActif] = useState(false);
-
-  async function playSound(source) {
-    const { sound } = await Audio.Sound.createAsync(source.file);
-
-    await sound.playAsync();
-  }
+  const [fadeIsIn, setFadeIsIn] = useState(false);
+  const [fadeIsOut, setFadeIsOut] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
   const dispatch = useDispatch();
@@ -40,8 +35,36 @@ export default function App(props) {
 
   useEffect(() => {
     dispatch(pokemonActions.getPokemon());
+    playSound({
+      file: require('../assets/mp3/music1.mp3'),
+    });
     fadeIn();
   }, []);
+
+  useEffect(() => {
+    let timeOut;
+    if (fadeIsIn) {
+      playSound({ file: require('../assets/mp3/4.mp3') });
+      setPokemonNoVisible(false);
+      setPokeballNoActif(false);
+
+      const delayPop = getRandomInt(15000, 20000);
+      timeOut = setTimeout(() => {
+        fadeOut();
+      }, delayPop);
+    } else if (fadeIsOut) {
+      setPokemonNoVisible(true);
+      setPokeballNoActif(true);
+
+      const delayPop = getRandomInt(15000, 20000);
+      timeOut = setTimeout(() => {
+        fadeIn();
+        setCounterPokemon(getRandomInt(0, 150));
+      }, delayPop);
+    }
+
+    return () => clearTimeout(timeOut);
+  }, [fadeIsIn, fadeIsOut]);
 
   const pokemonDetails = (id, name, level, sexe, src) => {
     props.navigation.navigate('DetailPokemon', {
@@ -60,9 +83,8 @@ export default function App(props) {
       useNativeDriver: true,
     }).start();
 
-    playSound({ file: require('../assets/mp3/4.mp3') });
-    setPokemonVisible(false);
-    setPokeballNoActif(false);
+    setFadeIsIn(true);
+    setFadeIsOut(false);
   };
 
   const fadeOut = () => {
@@ -72,16 +94,15 @@ export default function App(props) {
       useNativeDriver: true,
     }).start();
 
-    const delayPop = getRandomInt(1000, 20000);
-    setTimeout(() => {
-      fadeIn();
-      setCounterPokemon(getRandomInt(0, 150));
-    }, delayPop);
+    setFadeIsOut(true);
+    setFadeIsIn(false);
+  };
 
+  const catchPokemon = () => {
     playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
     dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
-    setPokemonVisible(true);
-    setPokeballNoActif(true);
+
+    fadeOut();
   };
 
   return (
@@ -104,13 +125,13 @@ export default function App(props) {
                 <Pokemon
                   pokemon={pokemon[counterPokemon]}
                   onClickPokemon={pokemonDetails}
-                  pokemonVisible={pokemonVisible}
+                  pokemonNoVisible={pokemonNoVisible}
                 />
               </Animated.View>
               <TouchableOpacity
                 disabled={pokeballNoActif}
                 activeOpacity={0.1}
-                onPress={fadeOut}
+                onPress={catchPokemon}
               >
                 <Image
                   source={require('../assets/img/pokeball.png')}
