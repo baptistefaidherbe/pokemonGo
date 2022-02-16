@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Text, Image } from 'react-native';
 
 //Screen
 import HomeScreen from '../screens/Home';
@@ -23,35 +23,55 @@ const AppTabNavigator = () => {
   return (
     <TabNavigator.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
+        tabBarIcon: ({ image, focused }) => {
           if (route.name == 'TabHome') {
-            iconName = 'home';
+            image = focused ? require('../assets/img/iconsPokeball2.png') : require('../assets/img/iconsPokeball.png') ;
           } else if (route.name == 'TabMyPokemon') {
-            iconName = 'pokeball';
+            image = focused ? require('../assets/img/iconsPikachu2.png') : require('../assets/img/iconsPikachu.png');
           }
 
-          return <AntDesign name={iconName} size={size} color={color} />;
+          return <Image source={image} style={{ width: 30, height: 30 }} />;
+        },
+
+        tabBarLabel: () => {
+          let name;
+
+          if (route.name == 'TabHome') {
+            name = 'Capture';
+          } else if (route.name == 'TabMyPokemon') {
+            name = 'Ma team';
+          }
+
+          return (
+            <Text
+              style={{
+                fontSize: 15,
+              }}
+            >
+              {name}
+            </Text>
+          );
         },
 
         tabBarStyle: {
-          backgroundColor: route.name == 'TabHome' ? 'rgba(243,243,243,0.5)' : 'white',
+          backgroundColor:
+            route.name == 'TabHome' ? 'rgba(243,243,243,0.5)' : 'white',
           height: 80,
           position: 'absolute',
           elevation: 0,
+          
         },
       })}
     >
       <TabNavigator.Screen
         name='TabHome'
         component={HomeScreen}
-        options={{ title: 'Home', ...headerOptions }}
+        options={{ title: 'Home', fontSize: 200, ...headerOptions }}
       />
       <TabNavigator.Screen
         name='TabMyPokemon'
         component={MyPokemonScreen}
-        options={{ title: 'Mon équipe ', ...headerOptions, headerShown: true }}
+        options={{ title: 'Ma team ', ...headerOptions, headerShown: true }}
       />
     </TabNavigator.Navigator>
   );

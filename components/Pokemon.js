@@ -47,6 +47,7 @@ export default function Pokemon(props) {
             d'apparaitre !
           </Text>
           <TouchableOpacity
+            disabled={props.pokemonNoVisible}
             activeOpacity={0.5}
             onPress={() =>
               props.onClickPokemon(
