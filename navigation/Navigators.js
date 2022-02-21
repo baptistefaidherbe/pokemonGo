@@ -7,7 +7,7 @@ import { Text, Image } from 'react-native';
 //Screen
 import HomeScreen from '../screens/Home';
 import MyPokemonScreen from '../screens/MyPokemon';
-import DetailsPokemon from '../screens/DetailsPokemon';
+import DetailsPokemonScreen from '../screens/DetailsPokemon';
 
 const TabNavigator = createBottomTabNavigator();
 
@@ -87,7 +87,7 @@ export const AppStacksNavigator = () => {
         component={AppTabNavigator}
         options={{ headerShown: false }}
       />
-      <StackNavigator.Screen name='DetailPokemon' component={DetailsPokemon} />
+      <StackNavigator.Screen name='DetailPokemon' component={DetailsPokemonScreen} />
     </StackNavigator.Navigator>
   );
 };

@@ -2,6 +2,7 @@ import { getRandomInt } from './utils';
 import { playSound } from './utils';
 
 export default function playMusic() {
+
   const randomMusic = getRandomInt(1, 3);
   switch (randomMusic) {
     case 1:

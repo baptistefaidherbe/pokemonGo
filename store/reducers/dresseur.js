@@ -7,10 +7,9 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SUPPR_STOCK_POKEBALL:
-      console.log('ici')
       return {
         ...state,
-        stockPokeball: state.stockPokeball -1,
+        stockPokeball: state.stockPokeball - 1,
       };
 
     default:

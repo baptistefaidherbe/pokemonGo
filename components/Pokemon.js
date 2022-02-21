@@ -41,11 +41,7 @@ export default function Pokemon(props) {
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.pokemon}>
-          <Text style={styles.text}>
-            Un <Text style={styles.bold}>{props.pokemon.name}</Text> de niveau
-            <Text style={styles.bold}> {props.pokemon.level} </Text>vient
-            d'apparaitre !
-          </Text>
+          {props.message}
           <TouchableOpacity
             disabled={props.pokemonNoVisible}
             activeOpacity={0.5}
