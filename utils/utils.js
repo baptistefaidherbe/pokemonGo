@@ -7,9 +7,6 @@ export function getRandomInt(min, max) {
 }
 
 export async function playSound(source, name) {
-  const audio = source.file;
-  // console.log(audio);
-  const sound = new Audio.Sound();
   try {
     const { sound } = await Audio.Sound.createAsync(source.file);
     sound.setVolumeAsync(0.1);
@@ -19,16 +16,15 @@ export async function playSound(source, name) {
       sound.setVolumeAsync(0.6);
     }
 
-    if (audio === 17) {
+    if (name === 'music1' || name === 'music2' || name === 'music3') {
       sound.setIsLoopingAsync(true);
+      return;
     }
 
     setTimeout(() => {
       sound.unloadAsync();
     }, test.durationMillis + 1000);
-
   } catch (error) {
     console.log(error);
   }
-
 }

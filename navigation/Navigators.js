@@ -2,32 +2,60 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Text, Image } from 'react-native';
+import { Text, Image, TouchableOpacity } from 'react-native';
 
 //Screen
 import HomeScreen from '../screens/Home';
 import MyPokemonScreen from '../screens/MyPokemon';
 import DetailsPokemonScreen from '../screens/DetailsPokemon';
+import PokeShopScreen from '../screens/PokeShop';
 
 const TabNavigator = createBottomTabNavigator();
 
 const AppTabNavigator = () => {
   const headerOptions = {
-    headerTintColor: 'red',
+    headerTintColor: 'orange',
     headerTitleAlign: 'center',
-    headerShown: false,
+    headerShown: true,
     headerStyle: {
       backgroundColor: 'rgba(243,243,243,0.5)',
     },
+  };
+
+  const option = {
+    headerTitleAlign: 'center',
+    title: 'toto',
+    headerLeft: () => (
+      <TouchableOpacity style={{ paddingLeft: 20 }}>
+        <Image
+          source={require('../assets/img/bag.png')}
+          style={{ width: 30, height: 30 }}
+        />
+      </TouchableOpacity>
+    ),
+    headerRight: () => (
+      
+      <Text style={{marginRight:20}}>200 ₽</Text>
+    ),
+
+    ...headerOptions,
   };
   return (
     <TabNavigator.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ image, focused }) => {
           if (route.name == 'TabHome') {
-            image = focused ? require('../assets/img/iconsPokeball2.png') : require('../assets/img/iconsPokeball.png') ;
+            image = focused
+              ? require('../assets/img/iconsPokeball2.png')
+              : require('../assets/img/iconsPokeball.png');
           } else if (route.name == 'TabMyPokemon') {
-            image = focused ? require('../assets/img/iconsPikachu2.png') : require('../assets/img/iconsPikachu.png');
+            image = focused
+              ? require('../assets/img/iconsPikachu2.png')
+              : require('../assets/img/iconsPikachu.png');
+          } else if (route.name == 'TabPokeShop') {
+            image = focused
+              ? require('../assets/img/iconsPokeShop2.png')
+              : require('../assets/img/iconsPokeShop.png');
           }
 
           return <Image source={image} style={{ width: 30, height: 30 }} />;
@@ -39,7 +67,9 @@ const AppTabNavigator = () => {
           if (route.name == 'TabHome') {
             name = 'Capture';
           } else if (route.name == 'TabMyPokemon') {
-            name = 'Ma team';
+            name = 'Mon équipe';
+          } else if (route.name == 'TabPokeShop') {
+            name = 'Poke Shop';
           }
 
           return (
@@ -59,19 +89,23 @@ const AppTabNavigator = () => {
           height: 80,
           position: 'absolute',
           elevation: 0,
-          
         },
       })}
     >
       <TabNavigator.Screen
         name='TabHome'
         component={HomeScreen}
-        options={{ title: 'Home', fontSize: 200, ...headerOptions }}
+        options={() => option}
       />
       <TabNavigator.Screen
         name='TabMyPokemon'
         component={MyPokemonScreen}
-        options={{ title: 'Ma team ', ...headerOptions, headerShown: true }}
+        options={() => option}
+      />
+      <TabNavigator.Screen
+        name='TabPokeShop'
+        component={PokeShopScreen}
+        options={() => option}
       />
     </TabNavigator.Navigator>
   );
@@ -87,7 +121,10 @@ export const AppStacksNavigator = () => {
         component={AppTabNavigator}
         options={{ headerShown: false }}
       />
-      <StackNavigator.Screen name='DetailPokemon' component={DetailsPokemonScreen} />
+      <StackNavigator.Screen
+        name='DetailPokemon'
+        component={DetailsPokemonScreen}
+      />
     </StackNavigator.Navigator>
   );
 };
