@@ -1,7 +1,6 @@
 import { playSound } from './utils';
 
 export default function criesPokemon(id) {
-  console.log(id);
   switch (id) {
     case 0:
       playSound({ file: require('../assets/mp3/criesPokemon/1.wav') });

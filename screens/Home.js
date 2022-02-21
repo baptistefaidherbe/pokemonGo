@@ -13,6 +13,7 @@ import {
   Animated,
   ImageBackground,
 } from 'react-native';
+import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 
 //constants
 import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
@@ -20,6 +21,7 @@ import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
 //utils
 import { getRandomInt, playSound } from '../utils/utils';
 import criesPokemon from '../utils/criesPokemon';
+import playMusic from '../utils/music';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -27,52 +29,41 @@ import Pokemon from '../components/Pokemon';
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
 import * as pokemonActions from '../store/actions/pokemon';
+import * as dresseurActions from '../store/actions/dresseur';
 
-export default function App(props) {
+export default function Home(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
+  const [catchRandom, setCatchRandom] = useState();
+  const [message, setMessage] = useState('');
   const [pokemonNoVisible, setPokemonNoVisible] = useState(false);
   const [pokeballNoActif, setPokeballNoActif] = useState(false);
   const [fadeIsIn, setFadeIsIn] = useState(true);
   const [fadeIsOut, setFadeIsOut] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
+  const stockPokeball = useSelector((state) => state.dresseur.stockPokeball);
+
   const dispatch = useDispatch();
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     dispatch(pokemonActions.getPokemon());
 
-    const randomMusic = getRandomInt(1, 3);
-    switch (randomMusic) {
-      case 1:
-        playSound({
-          file: require('../assets/mp3/music1.mp3'),
-        });
-        break;
-      case 2:
-        playSound({
-          file: require('../assets/mp3/music2.mp3'),
-        });
-        break;
-      case 3:
-        playSound({
-          file: require('../assets/mp3/music3.mp3'),
-        });
-        break;
-
-      default:
-        break;
-    }
+    playMusic();
 
     fadeIn();
   }, []);
 
   useEffect(() => {
     let timeOut;
+
     if (fadeIsIn) {
       criesPokemon(counterPokemon);
       setPokemonNoVisible(false);
       setPokeballNoActif(false);
+      pokemon[counterPokemon] &&
+        setMessage(`un ${pokemon[counterPokemon].name} vient d'apparaitre !`);
 
       const delayPop = getRandomInt(DELAY_RANDOM_MIN, DELAY_RANDOM_MAX);
       timeOut = setTimeout(() => {
@@ -81,6 +72,12 @@ export default function App(props) {
     } else if (fadeIsOut) {
       setPokemonNoVisible(true);
       setPokeballNoActif(true);
+      message.includes('a été attrapé') ||
+        (message.includes("s'est enfuit")
+          ? setTimeout(() => {
+              setMessage('');
+            }, 2500)
+          : setMessage(''));
 
       const delayPop = getRandomInt(DELAY_RANDOM_MIN, DELAY_RANDOM_MAX);
       timeOut = setTimeout(() => {
@@ -126,9 +123,37 @@ export default function App(props) {
 
   const catchPokemon = () => {
     playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
-    dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
+    setCatchRandom(getRandomInt(1, 2));
+    console.log('catchRandom', catchRandom);
+
+    if (catchRandom === 1) {
+      playSound(
+        { file: require('../assets/mp3/musicCapture.mp3') },
+        'musicCapture'
+      );
+      dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
+      setMessage(pokemon[counterPokemon].name + ' a été attrapé');
+      setTimeout(() => {
+        setMessage('');
+      }, 2500);
+    } else {
+      setMessage(pokemon[counterPokemon].name + " s'est enfuit");
+      setTimeout(() => {
+        setMessage('');
+      }, 2500);
+    }
+
+    dispatch(dresseurActions.supprStockPokeball());
 
     fadeOut();
+  };
+
+  const showMessage = () => {
+    return (
+      <View style={styles.message}>
+        <Text style={{ fontSize: 20 }}>{message}</Text>
+      </View>
+    );
   };
 
   return (
@@ -152,21 +177,33 @@ export default function App(props) {
                   pokemon={pokemon[counterPokemon]}
                   onClickPokemon={pokemonDetails}
                   pokemonNoVisible={pokemonNoVisible}
+                  showMessage={showMessage}
                 />
               </Animated.View>
               <TouchableOpacity
                 disabled={pokeballNoActif}
                 activeOpacity={0.1}
-                onPress={catchPokemon}
+                onPress={stockPokeball > 0 ? catchPokemon : null}
               >
                 <Image
                   source={require('../assets/img/pokeball.png')}
                   style={styles.pokeball}
                 />
+                <Badge
+                  status='primary'
+                  value={stockPokeball}
+                  containerStyle={{
+                    position: 'absolute',
+                    top: 5,
+                    left: 60,
+                    zIndex: 2,
+                  }}
+                />
               </TouchableOpacity>
             </>
           )}
         </View>
+        {message.length > 0 && showMessage()}
       </ImageBackground>
     </View>
   );
@@ -185,7 +222,8 @@ const styles = StyleSheet.create({
 
   containerPokemon: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'flex-end',
+    marginBottom: 100,
     alignItems: 'center',
   },
 
@@ -193,6 +231,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.2,
     height: Dimensions.get('window').width * 0.2,
     position: 'relative',
-    zIndex: 9,
+    zIndex: 1,
+  },
+
+  message: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(243,243,243,0.5)',
+    height: 150,
+    width: Dimensions.get('window').width,
   },
 });
