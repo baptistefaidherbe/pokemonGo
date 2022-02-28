@@ -90,6 +90,7 @@ export default function Home(props) {
   }, [fadeIsIn, fadeIsOut]);
 
   const pokemonDetails = (id, name, level, sexe, src) => {
+    console.log(props)
     props.navigation.navigate('DetailPokemon', {
       id,
       name,
@@ -131,7 +132,9 @@ export default function Home(props) {
         { file: require('../assets/mp3/musicCapture.mp3') },
         'musicCapture'
       );
+
       dispatch(pokemonActions.addPokemon(pokemon[counterPokemon]));
+      dispatch(dresseurActions.addMoney());
       setMessage(pokemon[counterPokemon].name + ' a été attrapé !');
       setTimeout(() => {
         setMessage('');
