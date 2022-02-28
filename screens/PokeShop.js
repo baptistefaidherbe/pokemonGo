@@ -17,14 +17,19 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
-import * as pokemonActions from '../store/actions/pokemon';
+import * as dresseurActions from '../store/actions/dresseur';
 
 //Components
 import ItemsPokeShop from '../components/itemsPokeShop';
 
 export default function PokeShop(props) {
   const items = useSelector((state) => state.pokeShopReducer.items);
+  const money = useSelector((state) => state.dresseur.money);
   const dispatch = useDispatch();
+
+  const buyPokeball = () => {
+    dispatch(dresseurActions.addPokeball())
+  }
 
   return (
     <View style={styles.container}>
@@ -36,7 +41,7 @@ export default function PokeShop(props) {
         >
           <FlatList
             data={items}
-            renderItem={({ item }) => <ItemsPokeShop item={item} />}
+            renderItem={({ item }) => <ItemsPokeShop money={money} item={item} buyPokeball={buyPokeball} />}
             keyExtractor={(item, index) => index}
           />
         </ImageBackground>

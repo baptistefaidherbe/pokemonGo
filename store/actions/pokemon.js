@@ -4,6 +4,7 @@ import { getRandomInt } from '../../utils/utils';
 export const GET_POKEMON = 'GET_POKEMON';
 export const GET_POKEMON_TYPE = 'GET_POKEMON_TYPE';
 export const ADD_POKEMON = 'ADD_POKEMON';
+export const REMOVE_POKEMON = 'REMOVE_POKEMON';
 
 export const getPokemon = () => {
   return async (dispatch) => {
@@ -45,5 +46,10 @@ export const getPokemonType = (id) => {
 
 export const addPokemon = (pokemon) => ({
   type: ADD_POKEMON,
+  pokemon,
+});
+
+export const removePokemon = (pokemon) => ({
+  type: REMOVE_POKEMON,
   pokemon,
 });

@@ -3,17 +3,17 @@ const initialState = {
     {
       img: require('../../assets/img/pokeball.png'),
       name: 'Pokeball',
-      price: 200,
+      price: 20,
     },
     {
       img: require('../../assets/img/superball.png'),
       name: 'Superball',
-      price: 600,
+      price: 100,
     },
     {
       img: require('../../assets/img/hyperball.png'),
       name: 'HyperBall',
-      price: 1200,
+      price: 300,
     },
   ],
 };

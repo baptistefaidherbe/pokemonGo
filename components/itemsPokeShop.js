@@ -14,11 +14,19 @@ import {
   Button,
 } from 'react-native';
 
-
-import { getRandomInt } from '../utils/utils';
-
 export default function itemsPokeShop(props) {
-  console.log(props);
+  const buyPokeball = () => {
+    switch (props.item.name) {
+      case 'Pokeball':
+        if (props.money > 0) props.buyPokeball();
+
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -26,16 +34,13 @@ export default function itemsPokeShop(props) {
           <TouchableOpacity
             disabled={props.pokemonNoVisible}
             activeOpacity={0.5}
+            onPress={buyPokeball}
           >
             <View style={{ alignItems: 'center' }}>
               <Image source={props.item.img} style={styles.item} />
               <Text>{props.item.name}</Text>
               <Text>{props.item.price} ₽</Text>
-              <Button
-                // onPress={onPressLearnMore}
-                title='Commander'
-                color='#841584'
-              />
+              <Button title='Commander' color='#841584' />
             </View>
           </TouchableOpacity>
         </View>

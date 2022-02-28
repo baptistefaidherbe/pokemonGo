@@ -12,9 +12,14 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import pokemon from '../store/reducers/pokemon';
 
 export default function PokemonTeam(props) {
+
+  const removePokemon = () => {
+    props.removePokemon(props.index)
+
+
+  }
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -29,6 +34,7 @@ export default function PokemonTeam(props) {
               props.pokemon.src
             )
           }
+          onLongPress={removePokemon}
         >
           <Image
             source={{
@@ -36,6 +42,7 @@ export default function PokemonTeam(props) {
             }}
             style={styles.imagePokemon}
           />
+
           <View>
             <Text>{props.pokemon.name}</Text>
             <Text> Level : {props.pokemon.level}</Text>
@@ -52,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(243,243,243,0.5)',
     marginBottom: 10,
-    justifyContent:'center'
+    justifyContent: 'center',
   },
   imagePokemon: {
     width: Dimensions.get('window').width * 0.2,

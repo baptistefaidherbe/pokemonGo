@@ -1,4 +1,4 @@
-import { SUPPR_STOCK_POKEBALL, ADD_MONEY } from '../actions/dresseur';
+import { SUPPR_STOCK_POKEBALL, ADD_MONEY, ADD_POKEBALL } from '../actions/dresseur';
 
 const initialState = {
   stockPokeball: 50,
@@ -16,6 +16,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         money: state.money + 20,
+      };
+
+    case ADD_POKEBALL:
+      return {
+        ...state,
+        stockPokeball: state.stockPokeball + 1,
+        money : state.money - 20
       };
 
     default:
