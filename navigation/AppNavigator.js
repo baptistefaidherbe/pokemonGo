@@ -1,13 +1,13 @@
 // Librairies
 import React from 'react';
-import { AppStacksNavigator } from './Navigators';
+import { AppDrawerNavigator } from './Navigators';
 import { NavigationContainer } from '@react-navigation/native';
 
 
 function AppNavigator() {
     return (
         <NavigationContainer>
-            <AppStacksNavigator />
+            <AppDrawerNavigator />
         </NavigationContainer>
     );
 }

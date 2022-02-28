@@ -11,8 +11,8 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-
 import { LinearGradient } from 'expo-linear-gradient';
+
 
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,6 +24,10 @@ import PokemonTeam from '../components/PokemonTeam';
 export default function MyPokemon(props) {
   const pokemon = useSelector((state) => state.pokemon.pokemonTeam);
   const dispatch = useDispatch();
+
+  const removePokemon = (index) => {
+    dispatch(pokemonActions.removePokemon(index))
+  }
 
   const pokemonDetails = (id, name, level, sexe, src) => {
     props.navigation.navigate('DetailPokemon', {
@@ -41,8 +45,8 @@ export default function MyPokemon(props) {
         <LinearGradient style={{ flex: 1 }} colors={['#22c1c3', '#fdbb2d']}>
           <FlatList
             data={pokemon}
-            renderItem={({ item }) => (
-              <PokemonTeam pokemon={item} onClickPokemon={pokemonDetails} />
+            renderItem={({ item, index }) => (
+              <PokemonTeam pokemon={item} index={index} removePokemon={removePokemon} onClickPokemon={pokemonDetails} />
             )}
             keyExtractor={(item, index) => index}
           />

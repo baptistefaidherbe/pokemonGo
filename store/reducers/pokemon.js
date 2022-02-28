@@ -1,4 +1,9 @@
-import { GET_POKEMON, GET_POKEMON_TYPE, ADD_POKEMON } from '../actions/pokemon';
+import {
+  GET_POKEMON,
+  GET_POKEMON_TYPE,
+  ADD_POKEMON,
+  REMOVE_POKEMON,
+} from '../actions/pokemon';
 
 const initialState = {
   pokemons: [],
@@ -22,6 +27,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pokemonTeam: [...state.pokemonTeam, action.pokemon],
+      };
+    case REMOVE_POKEMON:
+      const filterPokemonTeam = state.pokemonTeam.filter(
+        (pokemon, index) => index !== action.pokemon
+      );
+      return {
+        ...state,
+        pokemonTeam: filterPokemonTeam,
       };
 
     default:
