@@ -23,6 +23,7 @@ import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
 import { getRandomInt, playSound } from '../utils/utils';
 import criesPokemon from '../utils/criesPokemon';
 import playMusic from '../utils/music';
+import randomCatchPokemon from '../utils/randomCatchPokemon';
 
 //components
 import Pokemon from '../components/Pokemon';
@@ -126,7 +127,8 @@ export default function Home(props) {
 
   const catchPokemon = () => {
     playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
-    setCatchRandom(getRandomInt(1, 2));
+    randomCatchPokemon(pokeball[counterPokeball].name, counterPokemon, setCatchRandom )
+
     console.log('catchRandom', catchRandom);
 
     if (catchRandom === 1) {
@@ -148,7 +150,7 @@ export default function Home(props) {
       }, 2500);
     }
 
-    dispatch(dresseurActions.supprStockPokeball());
+    dispatch(dresseurActions.supprStockPokeball(counterPokeball));
 
     fadeOut();
   };
@@ -168,8 +170,6 @@ export default function Home(props) {
   const changePokeballReverse = () => {
     setCounterPokeball(counterPokeball - 1);
   };
-
-  console.log(counterPokeball);
 
   return (
     <View style={styles.container}>
@@ -221,7 +221,7 @@ export default function Home(props) {
                   }}
                 />
               </TouchableOpacity>
-              {counterPokeball < pokeball.length - 1 && (
+              {counterPokeball < 2 && (
                 <TouchableOpacity
                   style={{ position: 'absolute', right: 70, bottom: 10 }}
                   onPress={changePokeball}

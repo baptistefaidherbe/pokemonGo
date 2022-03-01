@@ -12,7 +12,7 @@ const initialState = {
     },
     {
       img: require('../../assets/img/hyperball.png'),
-      name: 'HyperBall',
+      name: 'Hyperball',
       price: 300,
     },
   ],

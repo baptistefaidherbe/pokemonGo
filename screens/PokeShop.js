@@ -27,8 +27,8 @@ export default function PokeShop(props) {
   const money = useSelector((state) => state.dresseur.money);
   const dispatch = useDispatch();
 
-  const buyPokeball = () => {
-    dispatch(dresseurActions.addPokeball())
+  const buyPokeball = (index) => {
+    dispatch(dresseurActions.addPokeball(index))
   }
 
   return (

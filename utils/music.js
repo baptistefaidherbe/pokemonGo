@@ -2,7 +2,7 @@ import { getRandomInt } from './utils';
 import { playSound } from './utils';
 
 export default function playMusic() {
-  const randomMusic = getRandomInt(1, 3);
+  const randomMusic = getRandomInt(1, 4);
   switch (randomMusic) {
     case 1:
       playSound(
@@ -24,6 +24,14 @@ export default function playMusic() {
       playSound(
         {
           file: require('../assets/mp3/music3.mp3'),
+        },
+        'music3'
+      );
+      break;
+    case 4:
+      playSound(
+        {
+          file: require('../assets/mp3/music4.mp3'),
         },
         'music3'
       );

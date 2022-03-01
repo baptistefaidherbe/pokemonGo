@@ -9,18 +9,21 @@ const initialState = {
     {
       stockPokeball: 50,
       src: require('../../assets/img/pokeball.png'),
+      name: 'pokeball'
     },
     {
       stockPokeball: 0,
       src: require('../../assets/img/superball.png'),
+      name: 'superball'
     },
     {
       stockPokeball: 0,
       src: require('../../assets/img/hyperball.png'),
+      name: 'hyperball'
     },
   ],
 
-  money: 50,
+  money: 500,
 };
 
 export default (state = initialState, action) => {
@@ -30,8 +33,8 @@ export default (state = initialState, action) => {
         ...state,
         pokeball: [
           ...state.pokeball,
-          (state.pokeball[0].stockPokeball =
-            state.pokeball[0].stockPokeball - 1),
+          (state.pokeball[action.index].stockPokeball =
+            state.pokeball[action.index].stockPokeball - 1),
         ],
       };
     case ADD_MONEY:
@@ -45,8 +48,8 @@ export default (state = initialState, action) => {
         ...state,
         pokeball: [
           ...state.pokeball,
-          (state.pokeball[0].stockPokeball =
-            state.pokeball[0].stockPokeball + 1),
+          (state.pokeball[action.index].stockPokeball =
+            state.pokeball[action.index].stockPokeball + 1),
         ],
         money: state.money - 20,
       };

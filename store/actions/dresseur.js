@@ -6,16 +6,18 @@ export const ADD_POKEBALL = 'ADD_POKEBALL';
 export const CHANGE_POKEBALL = 'CHANGE_POKEBALL';
 
 
-export const supprStockPokeball = () => ({
+export const supprStockPokeball = (index) => ({
   type: SUPPR_STOCK_POKEBALL,
+  index
 });
 
 export const addMoney = () => ({
   type: ADD_MONEY,
 });
 
-export const addPokeball = () => ({
+export const addPokeball = (index) => ({
   type: ADD_POKEBALL,
+  index
 });
 
 
