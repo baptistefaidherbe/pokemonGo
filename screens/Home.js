@@ -48,6 +48,9 @@ export default function Home(props) {
 
   const dispatch = useDispatch();
 
+  const hours = new Date().getHours();
+  console.log(hours);
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -127,7 +130,11 @@ export default function Home(props) {
 
   const catchPokemon = () => {
     playSound({ file: require('../assets/mp3/soundPokeball.mp3') });
-    randomCatchPokemon(pokeball[counterPokeball].name, counterPokemon, setCatchRandom )
+    randomCatchPokemon(
+      pokeball[counterPokeball].name,
+      counterPokemon,
+      setCatchRandom
+    );
 
     console.log('catchRandom', catchRandom);
 
@@ -174,7 +181,14 @@ export default function Home(props) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/img/landscape1.jpg')}
+        source={
+          (hours >= 17 &&
+            hours < 19 &&
+            require('../assets/img/landscapeSunSet.jpg')) ||
+          (hours >= 7 && hours < 17
+            ? require('../assets/img/landscape1.jpg')
+            : require('../assets/img/landscapeNight.jpg'))
+        }
         resizeMode='cover'
         style={styles.background}
       >

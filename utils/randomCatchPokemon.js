@@ -19,7 +19,7 @@ export default function randomCatchPokemon(
         counterPokemon === 149 ||
         counterPokemon === 150
       ) {
-        setCatchRandom(getRandomInt(1, 30));
+        setCatchRandom(getRandomInt(1, 50));
       } else if (
         counterPokemon === 141 ||
         counterPokemon === 4 ||
@@ -60,7 +60,7 @@ export default function randomCatchPokemon(
         counterPokemon === 64 ||
         counterPokemon === 93
       ) {
-        setCatchRandom(getRandomInt(1, 10));
+        setCatchRandom(getRandomInt(1, 15));
       } else {
         setCatchRandom(getRandomInt(1, 2));
       }
@@ -78,7 +78,7 @@ export default function randomCatchPokemon(
         counterPokemon === 149 ||
         counterPokemon === 150
       ) {
-        setCatchRandom(getRandomInt(1, 10));
+        setCatchRandom(getRandomInt(1, 40));
       } else if (
         counterPokemon === 141 ||
         counterPokemon === 4 ||
@@ -121,7 +121,7 @@ export default function randomCatchPokemon(
       ) {
         setCatchRandom(getRandomInt(1, 5));
       } else {
-        setCatchRandom(getRandomInt(1, 1.3));
+        setCatchRandom(getRandomInt(1, 2));
       }
 
       break;
@@ -138,7 +138,7 @@ export default function randomCatchPokemon(
         counterPokemon === 149 ||
         counterPokemon === 150
       ) {
-        setCatchRandom(getRandomInt(1, 5));
+        setCatchRandom(getRandomInt(1, 8));
       } else if (
         counterPokemon === 141 ||
         counterPokemon === 4 ||
@@ -181,7 +181,7 @@ export default function randomCatchPokemon(
       ) {
         setCatchRandom(getRandomInt(1, 2));
       } else {
-        setCatchRandom(getRandomInt(1, 1.2));
+        setCatchRandom(getRandomInt(1, 2));
       }
 
       break;
