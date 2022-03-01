@@ -14,6 +14,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //constants
 import { DELAY_RANDOM_MAX, DELAY_RANDOM_MIN } from '../constants';
@@ -33,6 +34,7 @@ import * as dresseurActions from '../store/actions/dresseur';
 
 export default function Home(props) {
   const [counterPokemon, setCounterPokemon] = useState(getRandomInt(0, 150));
+  const [counterPokeball, setCounterPokeball] = useState(0);
   const [catchRandom, setCatchRandom] = useState();
   const [message, setMessage] = useState('');
   const [pokemonNoVisible, setPokemonNoVisible] = useState(false);
@@ -41,7 +43,7 @@ export default function Home(props) {
   const [fadeIsOut, setFadeIsOut] = useState(false);
 
   const pokemon = useSelector((state) => state.pokemon.pokemons);
-  const stockPokeball = useSelector((state) => state.dresseur.stockPokeball);
+  const pokeball = useSelector((state) => state.dresseur.pokeball);
 
   const dispatch = useDispatch();
 
@@ -90,7 +92,7 @@ export default function Home(props) {
   }, [fadeIsIn, fadeIsOut]);
 
   const pokemonDetails = (id, name, level, sexe, src) => {
-    console.log(props)
+    console.log(props);
     props.navigation.navigate('DetailPokemon', {
       id,
       name,
@@ -159,6 +161,16 @@ export default function Home(props) {
     );
   };
 
+  const changePokeball = () => {
+    setCounterPokeball(counterPokeball + 1);
+  };
+
+  const changePokeballReverse = () => {
+    setCounterPokeball(counterPokeball - 1);
+  };
+
+  console.log(counterPokeball);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -183,18 +195,24 @@ export default function Home(props) {
                   showMessage={showMessage}
                 />
               </Animated.View>
+
               <TouchableOpacity
                 disabled={pokeballNoActif}
                 activeOpacity={0.1}
-                onPress={stockPokeball > 0 ? catchPokemon : null}
+                onPress={
+                  pokeball[counterPokeball].stockPokeball > 0
+                    ? catchPokemon
+                    : null
+                }
               >
                 <Image
-                  source={require('../assets/img/pokeball.png')}
+                  source={pokeball[counterPokeball].src}
                   style={styles.pokeball}
                 />
+
                 <Badge
                   status='primary'
-                  value={stockPokeball}
+                  value={pokeball[counterPokeball].stockPokeball}
                   containerStyle={{
                     position: 'absolute',
                     top: 5,
@@ -203,6 +221,26 @@ export default function Home(props) {
                   }}
                 />
               </TouchableOpacity>
+              {counterPokeball < pokeball.length - 1 && (
+                <TouchableOpacity
+                  style={{ position: 'absolute', right: 70, bottom: 10 }}
+                  onPress={changePokeball}
+                >
+                  <Ionicons
+                    name='chevron-forward-outline'
+                    size={50}
+                    color='red'
+                  />
+                </TouchableOpacity>
+              )}
+              {counterPokeball > 0 && (
+                <TouchableOpacity
+                  style={{ position: 'absolute', left: 70, bottom: 10 }}
+                  onPress={changePokeballReverse}
+                >
+                  <Ionicons name='chevron-back-outline' size={50} color='red' />
+                </TouchableOpacity>
+              )}
             </>
           )}
         </View>
