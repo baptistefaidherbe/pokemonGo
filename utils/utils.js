@@ -1,7 +1,7 @@
 import { Audio } from 'expo-av';
 
 export function getRandomInt(min, max) {
-  min = Math.ceil(min);
+  min = Math.floor(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }

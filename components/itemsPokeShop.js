@@ -18,7 +18,13 @@ export default function itemsPokeShop(props) {
   const buyPokeball = () => {
     switch (props.item.name) {
       case 'Pokeball':
-        if (props.money > 0) props.buyPokeball();
+        if (props.money > 0) props.buyPokeball(0);
+        break;
+      case 'Superball':
+        if (props.money > 0) props.buyPokeball(1);
+        break;
+      case 'Hyperball':
+        if (props.money > 0) props.buyPokeball(2);
 
         break;
 
